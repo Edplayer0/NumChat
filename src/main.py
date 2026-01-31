@@ -1,22 +1,19 @@
-import os
 import sys
+from pathlib import Path
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, str(Path.cwd()))
 
 # pylint: disable=wrong-import-position
 from src.app.app import App
 from src.ui.window import MainWindow
-
-# GUI Components
-from src.ui.intro import Intro
 
 
 def main():
 
     app = App()
 
-    root = MainWindow(Intro().layout)
-    root.show()
+    window = MainWindow()
+    window.show()
 
     app.mainloop()
 

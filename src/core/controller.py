@@ -1,0 +1,37 @@
+# pylint: disable=no-name-in-module
+from PyQt6.QtWidgets import QFileDialog
+
+from src.models.mes_parser import MessagesParser
+
+from src.core.parsers import TelegramParser
+
+from src.models.exceptions import UnknownChatFormat
+
+
+class Engine:
+
+    def _new_file(self) -> str:
+        """Open a file dialog to select the file"""
+        file_path, _ = QFileDialog.getOpenFileName(
+            filter=".json", caption="Select an exported chat"
+        )
+        return file_path
+
+    def _choose_parser(self, file_path: str) -> MessagesParser:
+
+        match file_path:
+            case True:
+                return TelegramParser(file_path)
+
+        raise UnknownChatFormat
+
+    def start(self):
+        """Start the file selection and parser selection"""
+        file_path = self._new_file()
+
+        if not file_path.strip():
+            return
+
+        parser: MessagesParser = self._choose_parser(file_path)
+
+        parser.load_messages()

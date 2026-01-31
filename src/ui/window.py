@@ -1,19 +1,20 @@
 # pylint: disable=no-name-in-module
-from PyQt6.QtWidgets import QWidget, QVBoxLayout
+from PyQt6.QtWidgets import QMainWindow
+from src.ui.intro import Intro
+
+from src.core.controller import Engine
 
 
-class MainWindow(QWidget):
-    def __init__(self, *args):
+class MainWindow(QMainWindow):
+    def __init__(self):
         super().__init__()
 
-        self.setGeometry(200, 200, 800, 550)
+        engine = Engine()
 
-        self.setWindowTitle("Telegram Chat Analizer")
+        self.setGeometry(300, 300, 500, 350)
+        self.setMaximumSize(500, 350)
 
-        main_layout = QVBoxLayout()
-        self.setLayout(main_layout)
+        intro = Intro(engine, self)
+        self.setCentralWidget(intro)
 
-        main_layout.setContentsMargins(50, 100, 50, 100)
-
-        for component in args:
-            main_layout.addLayout(component)
+        self.setWindowTitle("Chat Analizer")

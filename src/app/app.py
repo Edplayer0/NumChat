@@ -8,7 +8,7 @@ class App(QApplication):
     def __init__(self):
         super().__init__(sys.argv)
 
-        self.setApplicationName("Tg Chat Analizer")
+        self.setApplicationName("NumChat: Chat Analizer")
 
     def mainloop(self):
         """Enter in the application loop"""
