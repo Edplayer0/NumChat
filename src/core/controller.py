@@ -13,15 +13,14 @@ class Engine:
     def _new_file(self) -> str:
         """Open a file dialog to select the file"""
         file_path, _ = QFileDialog.getOpenFileName(
-            filter=".json", caption="Select an exported chat"
+            filter="*.json", caption="Select an exported chat"
         )
         return file_path
 
     def _choose_parser(self, file_path: str) -> MessagesParser:
 
-        match file_path:
-            case True:
-                return TelegramParser(file_path)
+        if True:
+            return TelegramParser(file_path)
 
         raise UnknownChatFormat
 
@@ -34,4 +33,7 @@ class Engine:
 
         parser: MessagesParser = self._choose_parser(file_path)
 
-        parser.load_messages()
+        try:
+            parser.load_messages()
+        except KeyError as exc:
+            raise UnknownChatFormat from exc
