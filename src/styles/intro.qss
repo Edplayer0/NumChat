@@ -1,0 +1,31 @@
+QWidget {
+    background-color: #fff;
+}
+
+QLabel#heading {
+    font-size: 25px;
+    font-weight: bold;
+}
+QLabel#subheading {
+    font-size: 18px;
+    font: Segoe UI Symbol;
+}
+
+QPushButton {
+    border-radius: 8px;
+    color: white;
+    height: 30px;
+    font-weight: 600;
+}
+QPushButton#explore {
+    background-color: #0d6efd;
+    border: 3 solid #0d6efd;
+}
+QPushButton#explore:hover {
+    background-color: gray;
+    border: 3 solid gray;
+}
+QPushButton#cancel {
+    background-color: gray;
+    border: 3 solid gray;
+}

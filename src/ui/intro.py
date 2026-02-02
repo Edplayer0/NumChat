@@ -1,4 +1,5 @@
 import sys
+from pathlib import Path
 
 # pylint: disable=no-name-in-module
 from PyQt6.QtWidgets import QVBoxLayout, QLabel, QPushButton, QWidget, QHBoxLayout
@@ -16,12 +17,22 @@ class Intro(QWidget):
 
         self.setLayout(layout)
 
-        instruction = QLabel("Select a JSON file", self)
+        heading = QLabel("Welcome", self, alignment=Qt.AlignmentFlag.AlignCenter)
+        heading.setObjectName("heading")
+
+        subheading = QLabel(
+            " Select a JSON file with an exported chat",
+            self,
+            alignment=Qt.AlignmentFlag.AlignCenter,
+        )
+        subheading.setObjectName("subheading")
 
         explore_button = QPushButton("Explore", self)
+        explore_button.setObjectName("explore")
         explore_button.clicked.connect(lambda: engine.start())
 
         cancel_button = QPushButton("Cancel", self)
+        cancel_button.setObjectName("cancel")
         cancel_button.clicked.connect(sys.exit)
 
         buttons = QHBoxLayout()
@@ -32,5 +43,6 @@ class Intro(QWidget):
         buttons.addWidget(explore_button)
         buttons.addWidget(cancel_button)
 
-        layout.addWidget(instruction, alignment=Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(heading)
+        layout.addWidget(subheading)
         layout.addLayout(buttons)

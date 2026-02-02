@@ -12,6 +12,8 @@ def main():
 
     app = App()
 
+    app.setStyleSheet(Path("src/styles/intro.qss").read_text(encoding="UTF-8"))
+
     window = MainWindow()
     window.show()
 
