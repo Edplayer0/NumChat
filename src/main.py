@@ -5,16 +5,20 @@ sys.path.insert(0, str(Path.cwd()))
 
 # pylint: disable=wrong-import-position
 from src.app.app import App
-from src.ui.window import MainWindow
+from src.ui.window import Window
+
+from src.core.controller import Controller
 
 
 def main():
 
     app = App()
 
-    app.setStyleSheet(Path("src/styles/intro.qss").read_text(encoding="UTF-8"))
+    app.setStyleSheet(Path("src/style/style.qss").read_text(encoding="UTF-8"))
 
-    window = MainWindow()
+    controller = Controller()
+
+    window = Window(controller)
     window.show()
 
     app.mainloop()

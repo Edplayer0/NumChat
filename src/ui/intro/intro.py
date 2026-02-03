@@ -1,16 +1,15 @@
 import sys
-from pathlib import Path
 
 # pylint: disable=no-name-in-module
 from PyQt6.QtWidgets import QVBoxLayout, QLabel, QPushButton, QWidget, QHBoxLayout
 from PyQt6.QtCore import Qt
 
-from src.core.controller import Engine
+from src.core.controller import Controller
 
 
 class Intro(QWidget):
 
-    def __init__(self, engine: Engine, *args, **kwargs):
+    def __init__(self, controller: Controller, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         layout = QVBoxLayout(self)
@@ -29,7 +28,7 @@ class Intro(QWidget):
 
         explore_button = QPushButton("Explore", self)
         explore_button.setObjectName("explore")
-        explore_button.clicked.connect(lambda: engine.start())
+        explore_button.clicked.connect(lambda: controller.start())
 
         cancel_button = QPushButton("Cancel", self)
         cancel_button.setObjectName("cancel")

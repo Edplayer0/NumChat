@@ -8,7 +8,10 @@ from src.core.parsers import TelegramParser
 from src.models.exceptions import UnknownChatFormat
 
 
-class Engine:
+class Controller:
+
+    def __init__(self):
+        self.window = None
 
     def _new_file(self) -> str:
         """Open a file dialog to select the file"""
@@ -35,5 +38,8 @@ class Engine:
 
         try:
             parser.load_messages()
-        except KeyError as exc:
+        except Exception as exc:
             raise UnknownChatFormat from exc
+
+        # TODO: start
+        self.window.start_dashboard(parser)
