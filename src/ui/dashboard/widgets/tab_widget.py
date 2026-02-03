@@ -12,3 +12,5 @@ class TabWidget(QTabWidget):
         self.addTab(QWidget(self), "Month")
         self.addTab(QWidget(self), "Year")
         self.addTab(QWidget(self), "All")
+
+        self.setObjectName("tab")

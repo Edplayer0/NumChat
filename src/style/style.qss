@@ -19,15 +19,21 @@ QPushButton {
 }
 QPushButton#explore {
     background-color: #0d6efd;
-    border: 3 solid #0d6efd;
+    border: 1 solid #0d6efd;
 }
 QPushButton#explore:hover {
     background-color: gray;
-    border: 3 solid gray;
+    border: 1 solid gray;
 }
 QPushButton#cancel {
+    background-color: rgb(230, 230, 230);
+    border: 1 solid black;
+    color: black;
+}
+QPushButton#cancel:hover {
     background-color: gray;
-    border: 3 solid gray;
+    border: 1 solid gray;
+    color: white;
 }
 
 
@@ -36,14 +42,20 @@ QLabel#label {
     font-size: 29px;
     font-weight: bold;
     padding: 5px;
-    border: 1 solid rgb(200, 200, 200);
+    border: 1 solid rgb(220, 220, 220);
 }
 
 QLabel#participant {
-    font-size: 19px;
+    font-size: 18px;
     font: Segoe UI Symbol
 }
 
 QWidget#info {
-    border: 1 solid rgb(200, 200, 200);
+    border: 1 solid rgb(220, 220, 220);
+}
+
+QTabBar::tab {
+    width: 122%;
+    height: 38px;
+    font: Helveltica;
 }
