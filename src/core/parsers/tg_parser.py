@@ -41,33 +41,34 @@ class TelegramParser(MessagesParser):
         if self.messages_df is None:
             raise NoChatLoaded
 
-        participants: list[str] = sorted(list(set(self.messages_df["Sender"])))
+        participants: list[str] = sorted(self.messages_df["Sender"].unique())
 
         return participants
 
     def messages_per_participant(
         self, date=None, participant=None
     ) -> dict[str, int] | int:
+
         if self.messages_df is None:
             raise NoChatLoaded
 
+        # No data specified
         if participant is None and date is None:
             return self.messages_df["Sender"].value_counts().to_dict()
 
+        # Participant specified
         if date is None:
-            return self.messages_df["Sender"].value_counts()[participant]
+            mask = self.messages_df["Sender"].values == participant
+            return mask.sum()
 
-        participants = self.participants()
+        # Date specified
+        if participant is None:
+            mask = self.messages_df["Date"].values == date
+            return mask.sum()
 
-        messages = self.messages_df.to_numpy()
+        # Both specified
+        mask = (self.messages_df["Sender"].values == participant) & (
+            self.messages_df["Date"].values == date
+        )
 
-        result = dict((p, 0) for p in participants)
-
-        for message in messages:
-            if message[0] == date:
-                result[message[2]] += 1
-
-        if participant is not None:
-            return result[participant]
-
-        return result
+        return mask.sum()
