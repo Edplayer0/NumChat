@@ -63,12 +63,12 @@ class TelegramParser(MessagesParser):
 
         # Date specified
         if participant is None:
-            mask = self.messages_df["Date"].values == date
+            mask = self.messages_df["Date"].str.startswith(date)
             return mask.sum()
 
         # Both specified
         mask = (self.messages_df["Sender"].values == participant) & (
-            self.messages_df["Date"].values == date
+            self.messages_df["Date"].str.startswith(date)
         )
 
         return mask.sum()
