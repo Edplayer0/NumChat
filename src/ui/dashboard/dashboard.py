@@ -6,7 +6,7 @@ from src.ui.dashboard.widgets.tab_widget import TabWidget
 
 
 class Dashboard(QWidget):
-    def __init__(self, parser):
+    def __init__(self):
         super().__init__()
 
         layout = QHBoxLayout()
@@ -15,8 +15,8 @@ class Dashboard(QWidget):
         layout.setSpacing(0)
         layout.setContentsMargins(0, 0, 0, 0)
 
-        control_panel = ControlPanel(parser, self)
+        control_panel = ControlPanel(self)
         layout.addWidget(control_panel)
 
-        tabs = TabWidget(parser, self)
+        tabs = TabWidget(self)
         layout.addWidget(tabs)

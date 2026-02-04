@@ -1,9 +1,10 @@
 # pylint: disable=no-name-in-module
 from PyQt6.QtWidgets import QFileDialog
 
-from src.models.mes_parser import MessagesParser
+from src.models.parser import MessagesParser
 
 from src.core.parsers import TelegramParser
+from src.core.analizer import Analizer
 
 from src.models.exceptions import UnknownChatFormat
 
@@ -23,7 +24,7 @@ class Controller:
     def _choose_parser(self, file_path: str) -> MessagesParser:
 
         if True:
-            return TelegramParser(file_path)
+            return TelegramParser()
 
         raise UnknownChatFormat
 
@@ -37,9 +38,11 @@ class Controller:
         parser: MessagesParser = self._choose_parser(file_path)
 
         try:
-            parser.load_messages()
+            df = parser.load_messages(file_path)
         except Exception as exc:
             raise UnknownChatFormat from exc
 
-        # TODO: start
-        self.window.start_dashboard(parser)
+        # Initializing the analizer
+        Analizer().messages_df = df
+
+        self.window.start_dashboard()

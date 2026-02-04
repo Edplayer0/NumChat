@@ -25,10 +25,10 @@ class Window(QMainWindow):
 
         controller.window = self
 
-    def start_dashboard(self, parser):
+    def start_dashboard(self):
         """Starts the dashboard"""
 
-        dashboard = Dashboard(parser)
+        dashboard = Dashboard()
 
         self.setMaximumSize(700, 500)
         self.setGeometry(200, 200, 700, 500)

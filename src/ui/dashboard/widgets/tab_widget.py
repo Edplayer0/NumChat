@@ -1,12 +1,10 @@
 # pylint: disable=no-name-in-module
 from PyQt6.QtWidgets import QWidget, QTabWidget
 
-from src.models.mes_parser import MessagesParser
-
 
 class TabWidget(QTabWidget):
-    def __init__(self, parser: MessagesParser, parent):
-        super().__init__(parent=parent)
+    def __init__(self, *args):
+        super().__init__(*args)
 
         self.addTab(QWidget(self), "Week")
         self.addTab(QWidget(self), "Month")
