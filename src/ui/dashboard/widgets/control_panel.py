@@ -1,5 +1,5 @@
 # pylint: disable=no-name-in-module
-from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout
+from PyQt6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout
 from PyQt6.QtCore import Qt
 
 from src.core.analizer import Analizer
@@ -24,21 +24,83 @@ class ControlPanel(QWidget):
         layout.addStretch()
 
         info = QWidget(self)
-        info.setObjectName("info")
 
         info_layout = QVBoxLayout()
         info.setLayout(info_layout)
 
+        info_layout.setSpacing(0)
+        info_layout.setContentsMargins(0, 0, 0, 0)
+
         mess_per_participants = self.analizer.messages_per_participant()
 
-        for participant in mess_per_participants.items():
-            par_label = QLabel(f" {participant[0]}: {participant[1]}", info)
-            par_label.setObjectName("participant")
-            info_layout.addWidget(par_label)
+        self.buttons = []
 
-        total = QLabel(" Total: " + str(self.analizer.total_messages()), info)
-        total.setObjectName("participant")
+        for participant in mess_per_participants.items():
+            par_button = QPushButton(
+                text=f" {participant[0]}: {participant[1]}", parent=info
+            )
+            self.buttons.append(par_button)
+            info_layout.addWidget(par_button)
+
+        total = QPushButton(
+            text=" Total: " + str(self.analizer.total_messages()), parent=info
+        )
+        self.buttons.append(total)
+        self.activate(total)
 
         info_layout.addWidget(total)
 
         layout.addWidget(info)
+
+    def activate(self, button: QPushButton) -> None:
+        button.setStyleSheet(
+            """QPushButton {
+    font-size: 20px;
+    font: Segoe UI Symbol;
+    border: 0 solid black;
+    background: rgb(136, 223, 255);
+    padding: 5px;
+    color: black;
+    border-radius: 0px;
+}"""
+        )
+
+        other_buttons = self.buttons.copy()
+        other_buttons.remove(button)
+
+        for other_button in other_buttons:
+            self.deactivate(other_button)
+
+        try:
+            button.clicked.disconnect()
+        except TypeError:
+            pass
+
+    def deactivate(self, button: QPushButton) -> None:
+        button.setStyleSheet(
+            """QPushButton {
+    font-size: 20px;
+    font: Segoe UI Symbol;
+    background: white;
+    border: 0 solid black;
+    padding: 5px;
+    color: black;
+    border-radius: 0px;
+}
+QPushButton:hover {
+    font-size: 20px;
+    font: Segoe UI Symbol;
+    border: 0 solid black;
+    background: rgb(178, 237, 255);
+    padding: 5px;
+    color: black;
+    border-radius: 0px;
+}"""
+        )
+
+        try:
+            button.clicked.disconnect()
+        except TypeError:
+            pass
+
+        button.clicked.connect(lambda: self.activate(button))

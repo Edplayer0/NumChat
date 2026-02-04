@@ -45,15 +45,6 @@ QLabel#label {
     border: 1 solid rgb(220, 220, 220);
 }
 
-QLabel#participant {
-    font-size: 18px;
-    font: Segoe UI Symbol
-}
-
-QWidget#info {
-    border: 1 solid rgb(220, 220, 220);
-}
-
 QTabBar::tab {
     width: 122%;
     height: 38px;
