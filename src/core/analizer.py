@@ -25,12 +25,16 @@ class Analizer:
     def messages_df(self, messages_df: pd.DataFrame):
         self._messages_df = messages_df
 
-    def total_messages(self) -> int:
+    def total_messages(self, date: Optional[str] = None) -> int:
         """Return the number of messages in the current chat."""
 
-        messages: int = len(self.messages_df)
+        if not date:
+            messages: int = len(self.messages_df)
 
-        return messages
+            return messages
+
+        messages = self.messages_df["Date"].str.startswith(date)
+        return messages.sum()
 
     def participants(self) -> list[str]:
         """Return a list with the name of every participant."""
