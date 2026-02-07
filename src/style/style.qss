@@ -50,3 +50,20 @@ QTabBar::tab {
     height: 38px;
     font: Helveltica;
 }
+
+QLineEdit#year_input {
+    width: 100px;
+    height: 30px;
+    border: 2 solid gray;
+    border-radius: 8px;
+    padding: 3px;
+    padding-left: 8px;
+}
+QLineEdit#year_input:focus {
+    width: 100px;
+    height: 30px;
+    border: 2 solid #0d6efd;
+    border-radius: 8px;
+    padding: 3px;
+    padding-left: 8px;
+}

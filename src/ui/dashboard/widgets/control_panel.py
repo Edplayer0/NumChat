@@ -55,11 +55,12 @@ class ControlPanel(QWidget):
     def activate(self, button: QPushButton) -> None:
         button.setStyleSheet(
             """QPushButton {
-    font-size: 20px;
+    font-size: 18px;
     font: Segoe UI Symbol;
     border: 0 solid black;
     background: rgb(136, 223, 255);
-    padding: 5px;
+    text-align: left;
+    padding: 9px;
     color: black;
     border-radius: 0px;
 }"""
@@ -79,20 +80,22 @@ class ControlPanel(QWidget):
     def deactivate(self, button: QPushButton) -> None:
         button.setStyleSheet(
             """QPushButton {
-    font-size: 20px;
+    font-size: 18px;
     font: Segoe UI Symbol;
     background: white;
     border: 0 solid black;
-    padding: 5px;
+    text-align: left;
+    padding: 9px;
     color: black;
     border-radius: 0px;
 }
 QPushButton:hover {
-    font-size: 20px;
+    font-size: 18px;
     font: Segoe UI Symbol;
     border: 0 solid black;
     background: rgb(178, 237, 255);
-    padding: 5px;
+    text-align: left;
+    padding: 9px;
     color: black;
     border-radius: 0px;
 }"""
