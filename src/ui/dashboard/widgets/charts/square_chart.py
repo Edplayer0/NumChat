@@ -81,6 +81,7 @@ class SquareChart(QWidget):
 
                         layout = QVBoxLayout()
                         self.setLayout(layout)
+                        layout.setContentsMargins(0, 0, 0, 0)
 
                         square = QPushButton(text=str(text), parent=self)
                         style = (
@@ -106,7 +107,8 @@ class SquareChart(QWidget):
                 layout = QHBoxLayout()
                 self.setLayout(layout)
 
-                layout.setSpacing(5)
+                layout.setSpacing(6)
+                layout.setContentsMargins(0, 0, 0, 0)
 
                 for idx, value in zip(index, data):
 
@@ -138,7 +140,7 @@ class SquareChart(QWidget):
         graph = QHBoxLayout()
 
         lines = QVBoxLayout()
-        lines.setSpacing(5)
+        lines.setSpacing(6)
 
         if label is not None:
             qlabel = QLabel(text=label, parent=self)

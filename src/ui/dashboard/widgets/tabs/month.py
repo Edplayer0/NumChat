@@ -73,7 +73,7 @@ class MonthTab(QWidget):
         mess_array = np.array(messages)
 
         self.sq_chart = SquareChart(
-            mess_array, label=f"{year}-{month.rjust(2, "0")}", width=10
+            mess_array, label=f"{year}-{month.rjust(2, "0")}", width=8
         )
 
         self.layout.addWidget(self.sq_chart, alignment=Qt.AlignmentFlag.AlignCenter)
