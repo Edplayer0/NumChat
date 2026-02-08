@@ -57,8 +57,8 @@ class YearTab(QWidget):
 
         for month in months_array:
             month = str(month)
-            mes_quantity = analizer.total_messages(f"{year}-{month.rjust(2, "0")}")
-            messages.append(mes_quantity)
+            mess_quantity = analizer.total_messages(f"{year}-{month.rjust(2, "0")}")
+            messages.append(mess_quantity)
 
         mess_array = np.array(messages)
 
@@ -66,12 +66,9 @@ class YearTab(QWidget):
 
         self.sq_chart = SquareChart(mess_array, label=year, width=6, index=months)
 
-        self.linear_chart = LinearChart()
-        self.linear_chart.axes.plot(months_array, mess_array)
-        self.linear_chart.axes.set_title(year)
-        self.linear_chart.axes.set_xlabel("Months")
-        self.linear_chart.axes.set_ylabel("Messages")
-        self.linear_chart.axes.grid(True)
+        self.linear_chart = LinearChart(
+            data=(months_array, mess_array), title=year, labels=("Months", "Messages")
+        )
 
         charts.addWidget(self.sq_chart, alignment=Qt.AlignmentFlag.AlignCenter)
         charts.addWidget(self.linear_chart, alignment=Qt.AlignmentFlag.AlignCenter)

@@ -51,7 +51,7 @@ class MonthTab(QWidget):
 
     def load(self):
 
-        month = self.month.text()
+        month = self.month.text().rjust(2, "0")
         year = self.year.text()
 
         if not all((month, year)):
@@ -71,24 +71,21 @@ class MonthTab(QWidget):
 
         for day in days_array:
             day = str(day)
-            date = f"{year}-{month.rjust(2, "0")}-{day.rjust(2, "0")}"
+            date = f"{year}-{month}-{day.rjust(2, "0")}"
             mes_quantity = analizer.total_messages(date=date)
             messages.append(mes_quantity)
 
         mess_array = np.array(messages)
 
-        self.sq_chart = SquareChart(
-            mess_array, label=f"{year}-{month.rjust(2, "0")}", width=8
-        )
+        self.sq_chart = SquareChart(mess_array, label=f"{year}-{month}", width=8)
 
         charts = QHBoxLayout()
 
-        self.linear_chart = LinearChart()
-        self.linear_chart.axes.plot(days_array, mess_array)
-        self.linear_chart.axes.set_title(f"{year}-{month.rjust(2, "0")}")
-        self.linear_chart.axes.set_xlabel("Days")
-        self.linear_chart.axes.set_ylabel("Messages")
-        self.linear_chart.axes.grid(True)
+        self.linear_chart = LinearChart(
+            data=(days_array, mess_array),
+            title=f"{year}-{month}",
+            labels=("Days", "Messages"),
+        )
 
         charts.addWidget(self.sq_chart, alignment=Qt.AlignmentFlag.AlignCenter)
         charts.addWidget(self.linear_chart, alignment=Qt.AlignmentFlag.AlignCenter)
