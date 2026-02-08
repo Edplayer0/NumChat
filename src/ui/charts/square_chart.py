@@ -27,25 +27,16 @@ class SquareChart(QWidget):
     ):
         super().__init__(*args, **kwargs)
 
-        class Info(QWidget):
+        class Info(QGroupBox):
             def __init__(self, data: ndarray, *args, **kwargs):
                 super().__init__(*args, **kwargs)
 
                 layout = QFormLayout()
                 self.setLayout(layout)
 
-                self.setObjectName("det")
+                self.setTitle("Details")
 
                 layout.setSpacing(5)
-
-                details = QGroupBox("Details")
-                details.setStyleSheet(
-                    """QGroupBox {font-size: 16px; font-weight: bold;}
-                    QLabel {font-size: 14px;}
-                """
-                )
-                det_layout = QFormLayout()
-                details.setLayout(det_layout)
 
                 highest_value = data.max()
                 minimun_value = data.min()
@@ -56,11 +47,16 @@ class SquareChart(QWidget):
                 highest = QLabel(text=f"Highest:  {highest_value}", parent=self)
                 mean_label = QLabel(text=f"Promedy:  {mean}", parent=self)
                 total_label = QLabel(text=f"Total:  {total}", parent=self)
-                det_layout.addWidget(minumun)
-                det_layout.addWidget(highest)
-                det_layout.addWidget(mean_label)
-                det_layout.addWidget(total_label)
-                layout.addWidget(details)
+                layout.addWidget(minumun)
+                layout.addWidget(highest)
+                layout.addWidget(mean_label)
+                layout.addWidget(total_label)
+
+                self.setStyleSheet(
+                    """QGroupBox {font-size: 16px; font-weight: bold;}
+                    QLabel {font-size: 14px;}
+                """
+                )
 
         class Line(QWidget):
             def __init__(
