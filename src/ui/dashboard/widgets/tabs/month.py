@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QHBoxLayout
 from PyQt6.QtCore import Qt
 
 from src.core.analizer import Analizer
-from src.ui.dashboard.widgets.charts.square_chart import SquareChart
+from src.ui.charts.square_chart import SquareChart
 from src.models.constants import months_dict
 
 analizer = Analizer()
