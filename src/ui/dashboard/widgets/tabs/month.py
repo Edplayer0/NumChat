@@ -8,6 +8,7 @@ from PyQt6.QtCore import Qt
 
 from src.core.analizer import Analizer
 from src.ui.charts.square_chart import SquareChart
+from src.ui.charts.linear_chart import LinearChart
 from src.models.constants import months_dict
 
 analizer = Analizer()
@@ -17,7 +18,8 @@ class MonthTab(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.sq_chart: Optional[QWidget] = None
+        self.sq_chart: Optional[SquareChart] = None
+        self.linear_chart: Optional[LinearChart] = None
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -55,8 +57,9 @@ class MonthTab(QWidget):
         if not all((month, year)):
             return
 
-        if isinstance(self.sq_chart, QWidget):
+        if isinstance(self.sq_chart, SquareChart):
             self.sq_chart.hide()
+            self.linear_chart.hide()
 
         self.space.hide()
 
@@ -64,7 +67,9 @@ class MonthTab(QWidget):
 
         days = list(months_dict.values())[int(month) - 1]
 
-        for day in range(1, days + 1):
+        days_array = np.arange(1, days + 1)
+
+        for day in days_array:
             day = str(day)
             date = f"{year}-{month.rjust(2, "0")}-{day.rjust(2, "0")}"
             mes_quantity = analizer.total_messages(date=date)
@@ -76,4 +81,16 @@ class MonthTab(QWidget):
             mess_array, label=f"{year}-{month.rjust(2, "0")}", width=8
         )
 
-        self.layout.addWidget(self.sq_chart, alignment=Qt.AlignmentFlag.AlignCenter)
+        charts = QHBoxLayout()
+
+        self.linear_chart = LinearChart()
+        self.linear_chart.axes.plot(days_array, mess_array)
+        self.linear_chart.axes.set_title(f"{year}-{month.rjust(2, "0")}")
+        self.linear_chart.axes.set_xlabel("Days")
+        self.linear_chart.axes.set_ylabel("Messages")
+        self.linear_chart.axes.grid(True)
+
+        charts.addWidget(self.sq_chart, alignment=Qt.AlignmentFlag.AlignCenter)
+        charts.addWidget(self.linear_chart, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        self.layout.addLayout(charts)

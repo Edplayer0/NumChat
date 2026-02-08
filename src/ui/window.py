@@ -15,7 +15,6 @@ class Window(QMainWindow):
 
         self.setWindowTitle("Chat Analizer")
         self.setGeometry(300, 300, 500, 350)
-        self.setMaximumSize(500, 350)
 
         intro = Intro(controller, self)
 
@@ -30,7 +29,6 @@ class Window(QMainWindow):
 
         dashboard = Dashboard()
 
-        self.setMaximumSize(700, 500)
         self.setGeometry(200, 200, 700, 500)
 
         self.setWindowTitle("Chat Analizer: Dashboard")
