@@ -14,11 +14,11 @@ class LinearChart(FigureCanvasQTAgg):
         dpi: int = 100,
     ):
         fig = Figure(figsize=(width, height), dpi=dpi)
-        axes = fig.add_subplot(111)
-        axes.plot(data[0], data[1])
-        axes.set_title(title)
-        axes.set_xlabel(labels[0])
-        axes.set_ylabel(labels[1])
-        axes.grid(True)
+        self.axes = fig.add_subplot(111)
+        self.axes.plot(data[0], data[1])
+        self.axes.set_title(title)
+        self.axes.set_xlabel(labels[0])
+        self.axes.set_ylabel(labels[1])
+        self.axes.grid(True)
 
         super().__init__(fig)

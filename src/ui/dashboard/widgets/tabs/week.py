@@ -85,6 +85,9 @@ class WeekTab(QWidget):
             mes_quantity = analizer.total_messages(date=date)
             messages.append(mes_quantity)
 
+        if not messages:
+            return
+
         mess_array = np.array(messages)
 
         self.sq_chart = SquareChart(
