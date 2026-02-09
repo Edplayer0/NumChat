@@ -7,8 +7,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QHBoxLayout
 from PyQt6.QtCore import Qt
 
 from src.core.analizer import Analizer
-from src.ui.charts.square_chart import SquareChart
-from src.ui.charts.linear_chart import LinearChart
+from src.ui.charts.charts import Charts
 from src.models.constants import months_dict
 
 analizer = Analizer()
@@ -18,8 +17,7 @@ class WeekTab(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.sq_chart: Optional[SquareChart] = None
-        self.linear_chart: Optional[LinearChart] = None
+        self.charts: Optional[Charts] = None
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -63,9 +61,9 @@ class WeekTab(QWidget):
         if not all((week, month, year)):
             return
 
-        if isinstance(self.sq_chart, SquareChart):
-            self.sq_chart.hide()
-            self.linear_chart.hide()
+        if isinstance(self.charts, Charts):
+            self.charts.hide()
+            del self.charts
 
         self.space.hide()
 
@@ -90,22 +88,10 @@ class WeekTab(QWidget):
 
         mess_array = np.array(messages)
 
-        self.sq_chart = SquareChart(
-            mess_array,
-            label=f"{year}-{month} W{week}",
-            width=7,
-            index=list(week_array),
+        self.charts = Charts(
+            title=f"{year}-{month}",
+            axis=(week_array, mess_array),
+            lin_labels=("Days", "Messages"),
         )
 
-        charts = QHBoxLayout()
-
-        self.linear_chart = LinearChart(
-            data=(week_array, mess_array),
-            title=f"{year}-{month} W{week}",
-            labels=("Days", "Messages"),
-        )
-
-        charts.addWidget(self.sq_chart, alignment=Qt.AlignmentFlag.AlignCenter)
-        charts.addWidget(self.linear_chart, alignment=Qt.AlignmentFlag.AlignCenter)
-
-        self.layout.addLayout(charts)
+        self.layout.addWidget(self.charts)

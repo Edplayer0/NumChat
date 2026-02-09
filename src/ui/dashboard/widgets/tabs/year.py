@@ -3,12 +3,11 @@ from typing import Optional
 import numpy as np
 
 # pylint: disable=no-name-in-module
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLineEdit
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLineEdit
 from PyQt6.QtCore import Qt
 
 from src.core.analizer import Analizer
-from src.ui.charts.square_chart import SquareChart
-from src.ui.charts.linear_chart import LinearChart
+from src.ui.charts.charts import Charts
 from src.models.constants import months_dict
 
 
@@ -19,8 +18,7 @@ class YearTab(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.sq_chart: Optional[SquareChart] = None
-        self.linear_chart: Optional[LinearChart] = None
+        self.charts: Optional[Charts] = None
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -46,9 +44,9 @@ class YearTab(QWidget):
         if not year:
             return
 
-        if isinstance(self.sq_chart, SquareChart):
-            self.sq_chart.hide()
-            self.linear_chart.hide()
+        if isinstance(self.charts, Charts):
+            self.charts.hide()
+            del self.charts
 
         months = list(months_dict.keys())
 
@@ -65,15 +63,12 @@ class YearTab(QWidget):
 
         mess_array = np.array(messages)
 
-        charts = QHBoxLayout()
-
-        self.sq_chart = SquareChart(mess_array, label=year, width=6, index=months)
-
-        self.linear_chart = LinearChart(
-            data=(months_array, mess_array), title=year, labels=("Months", "Messages")
+        self.charts = Charts(
+            title=year,
+            axis=(months_array, mess_array),
+            lin_labels=("Months", "Messages"),
+            sq_index=months,
+            sq_size=6,
         )
 
-        charts.addWidget(self.sq_chart, alignment=Qt.AlignmentFlag.AlignCenter)
-        charts.addWidget(self.linear_chart, alignment=Qt.AlignmentFlag.AlignCenter)
-
-        self.layout.addLayout(charts)
+        self.layout.addWidget(self.charts)
