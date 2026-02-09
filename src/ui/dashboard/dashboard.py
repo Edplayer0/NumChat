@@ -15,8 +15,8 @@ class Dashboard(QWidget):
         layout.setSpacing(0)
         layout.setContentsMargins(0, 0, 0, 0)
 
+        self.tabs = TabWidget(self)
         control_panel = ControlPanel(self)
-        layout.addWidget(control_panel)
 
-        tabs = TabWidget(self)
-        layout.addWidget(tabs)
+        layout.addWidget(control_panel)
+        layout.addWidget(self.tabs)

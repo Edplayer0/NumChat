@@ -41,6 +41,11 @@ class YearTab(QWidget):
 
     def load(self):
 
+        year = self.year.text()
+
+        if not year:
+            return
+
         if isinstance(self.sq_chart, SquareChart):
             self.sq_chart.hide()
             self.linear_chart.hide()
@@ -48,8 +53,6 @@ class YearTab(QWidget):
         months = list(months_dict.keys())
 
         self.space.hide()
-
-        year = self.year.text()
 
         messages: list[int] = []
 

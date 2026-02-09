@@ -11,9 +11,18 @@ class TabWidget(QTabWidget):
     def __init__(self, *args):
         super().__init__(*args)
 
-        self.addTab(WeekTab(self), "Week")
-        self.addTab(MonthTab(self), "Month")
-        self.addTab(YearTab(self), "Year")
-        self.addTab(AllTab(self), "All")
+        self.tabs = {
+            "Week": WeekTab(self),
+            "Month": MonthTab(self),
+            "Year": YearTab(self),
+            "All": AllTab(self),
+        }
+
+        for name, widget in self.tabs.items():
+            self.addTab(widget, name)
 
         self.setObjectName("tab")
+
+    def reload(self):
+        for tab in self.tabs.values():
+            tab.load()

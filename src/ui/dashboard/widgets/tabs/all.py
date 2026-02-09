@@ -1,3 +1,5 @@
+from typing import Optional
+
 import numpy as np
 
 # pylint: disable=no-name-in-module
@@ -15,25 +17,33 @@ class AllTab(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        layout = QVBoxLayout()
-        self.setLayout(layout)
+        self.chart: Optional[LinearChart] = None
 
-        dates = analizer.messages_df["Date"].unique()
+        self.layout = QVBoxLayout()
+        self.setLayout(self.layout)
+
+        self.dates = analizer.messages_df["Date"].unique()
+        self.load()
+
+    def load(self):
+
+        if isinstance(self.chart, LinearChart):
+            self.chart.hide()
 
         messages = []
 
-        for _, date in enumerate(dates):
+        for _, date in enumerate(self.dates):
             mess = analizer.total_messages(date=date)
             messages.append(mess)
 
         mess_array = np.array(messages)
 
-        chart = LinearChart(
-            data=(dates, mess_array),
+        self.chart = LinearChart(
+            data=(self.dates, mess_array),
             labels=("Time", "Messages"),
-            title="All history",
+            title="All chat history",
             width=10,
             height=7,
         )
-        chart.axes.xaxis.set_major_locator(MaxNLocator(8))
-        layout.addWidget(chart, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.chart.axes.xaxis.set_major_locator(MaxNLocator(8))
+        self.layout.addWidget(self.chart, alignment=Qt.AlignmentFlag.AlignCenter)

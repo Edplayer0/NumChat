@@ -8,8 +8,8 @@ analizer = Analizer()
 
 
 class ControlPanel(QWidget):
-    def __init__(self, *args):
-        super().__init__(*args)
+    def __init__(self, parent, *args):
+        super().__init__(parent=parent, *args)
 
         class Info(QWidget):
             def __init__(self, *args, **kwargs):
@@ -36,6 +36,8 @@ class ControlPanel(QWidget):
 
                 self.setStyleSheet("QLabel {font-size: 15px}")
                 general.setStyleSheet("QLabel {font-weight: bold; font-size: 17px}")
+
+        self.tabs = parent.tabs
 
         layout = QVBoxLayout()
         self.setLayout(layout)
@@ -103,6 +105,14 @@ class ControlPanel(QWidget):
             button.clicked.disconnect()
         except TypeError:
             pass
+
+        if button.text().startswith(" Total: "):
+            analizer.unset_participant()
+        else:
+            participant = button.text().split(":")[0][2:]
+            analizer.set_participant(participant)
+
+        self.tabs.reload()
 
     def deactivate(self, button: QPushButton) -> None:
         button.setStyleSheet(

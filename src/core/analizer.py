@@ -12,6 +12,9 @@ class Analizer:
             cls._instance = super().__new__(cls)
         return cls._instance
 
+    def __init__(self):
+        self._current_participant: Optional[str] = None
+
     @property
     def messages_df(self):
         """Returns the messages dataframe if its loaded,
@@ -25,16 +28,37 @@ class Analizer:
     def messages_df(self, messages_df: pd.DataFrame):
         self._messages_df = messages_df
 
-    def total_messages(self, date: Optional[str] = None) -> int:
+    def unset_participant(self) -> None:
+
+        self._current_participant = None
+
+    def set_participant(self, participant: str) -> None:
+        if participant not in self.participants():
+            raise ValueError("Unknown participant name.")
+
+        self._current_participant = participant
+
+    def total_messages(
+        self, date: Optional[str] = None, participant: Optional[str] = None
+    ) -> int:
         """Return the number of messages in the current chat."""
+        if participant is None and self._current_participant is not None:
+            participant = self._current_participant
 
-        if not date:
+        if date is None and participant is None:
             messages: int = len(self.messages_df)
-
             return messages
-
-        messages = self.messages_df["Date"].str.startswith(date)
-        return messages.sum()
+        elif date and not participant:
+            mask = self.messages_df["Date"].str.startswith(date)
+            return mask.sum()
+        elif participant and not date:
+            mask = self.messages_df["Sender"] == participant
+            return mask.sum()
+        else:
+            mask = (self.messages_df["Date"].str.startswith(date)) & (
+                self.messages_df["Sender"] == participant
+            )
+            return mask.sum()
 
     def participants(self) -> list[str]:
         """Return a list with the name of every participant."""
@@ -43,38 +67,20 @@ class Analizer:
 
         return participants
 
-    def messages_per_participant(
-        self, date: Optional[str] = None, participant: Optional[str] = None
-    ) -> dict[str, int] | int:
+    def messages_per_participant(self, date: Optional[str] = None) -> dict[str, int]:
         """Return the quantity of messages per participant.
 
         Args:
-            date (Optional[str]): The date in format (YY-MM-DD),
-            can also be (YY-MM) for getting the messages in a month or in a year (YY).
-            participant (Optional[str]): Can be selected an specific participant.
+            date (Optional[str]): The date in format (YY-MM-DD),can also be (YY-MM) for getting the messages in a month or in a year (YY).
         Returns:
-            dict[str, int]: if there is more than one participant selected (by default).
-            int: if you specify a single participant.
+            dict[str, int]
 
         """
 
-        # No data specified
-        if participant is None and date is None:
+        # No date specified
+        if date is None:
             return self.messages_df["Sender"].value_counts().to_dict()
 
-        # Participant specified
-        if date is None:
-            mask = self.messages_df["Sender"].values == participant
-            return mask.sum()
-
         # Date specified
-        if participant is None:
-            mask = self.messages_df["Date"].str.startswith(date)
-            return mask.sum()
-
-        # Both specified
-        mask = (self.messages_df["Sender"].values == participant) & (
-            self.messages_df["Date"].str.startswith(date)
-        )
-
-        return mask.sum()
+        mask = self.messages_df["Date"] == date
+        return self.messages_df[mask].value_counts().to_dict()
