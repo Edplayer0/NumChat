@@ -33,13 +33,13 @@ class WeekTab(QWidget):
 
         self.week = QLineEdit(form)
         self.week.setPlaceholderText("Week...")
-        self.week.setObjectName("year_input")
+        self.week.setObjectName("date_input")
         self.month = QLineEdit(form)
         self.month.setPlaceholderText("Month...")
-        self.month.setObjectName("year_input")
+        self.month.setObjectName("date_input")
         self.year = QLineEdit(form)
         self.year.setPlaceholderText("Year...")
-        self.year.setObjectName("year_input")
+        self.year.setObjectName("date_input")
 
         self.week.editingFinished.connect(self.load)
         self.month.editingFinished.connect(self.load)

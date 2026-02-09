@@ -33,10 +33,10 @@ class MonthTab(QWidget):
 
         self.year = QLineEdit(form)
         self.year.setPlaceholderText("Year.. .")
-        self.year.setObjectName("year_input")
+        self.year.setObjectName("date_input")
         self.month = QLineEdit(form)
         self.month.setPlaceholderText("Month.. .")
-        self.month.setObjectName("year_input")
+        self.month.setObjectName("date_input")
 
         self.month.editingFinished.connect(self.load)
         self.year.editingFinished.connect(self.load)

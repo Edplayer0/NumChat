@@ -30,7 +30,7 @@ class YearTab(QWidget):
 
         self.year = QLineEdit()
         self.year.setPlaceholderText("Year...")
-        self.year.setObjectName("year_input")
+        self.year.setObjectName("date_input")
 
         self.year.editingFinished.connect(self.load)
 

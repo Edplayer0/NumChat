@@ -50,7 +50,7 @@ QTabBar::tab {
     font: Helveltica;
 }
 
-QLineEdit#year_input {
+QLineEdit#date_input {
     width: 100px;
     height: 30px;
     border: 2 solid gray;
@@ -58,7 +58,7 @@ QLineEdit#year_input {
     padding: 3px;
     padding-left: 8px;
 }
-QLineEdit#year_input:focus {
+QLineEdit#date_input:focus {
     width: 100px;
     height: 30px;
     border: 2 solid #0d6efd;
