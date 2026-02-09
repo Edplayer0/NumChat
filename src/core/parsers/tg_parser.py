@@ -12,7 +12,7 @@ class TelegramParser(MessagesParser):
         with open(file_path, "r", encoding="utf-8") as file:
             data = json.load(file)
 
-            records = []
+        records = []
 
         for message in data["messages"]:
 
@@ -21,6 +21,6 @@ class TelegramParser(MessagesParser):
 
             records.append([date, time, message["from"]])
 
-        messages_df = pd.DataFrame(records, columns=["Date", "Time", "Sender"])
+        messages_df = self.to_dataframe(records)
 
         return messages_df

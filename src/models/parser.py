@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import pandas as pd
 
 
 class MessagesParser(ABC):
@@ -12,3 +13,7 @@ class MessagesParser(ABC):
         Returns:
             messages_df (DataFrame): the messages dataframe.
         """
+
+    def to_dataframe(self, values: list):
+        messages_df = pd.DataFrame(values, columns=["Date", "Time", "Sender"])
+        return messages_df
