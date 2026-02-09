@@ -17,7 +17,7 @@ class TelegramParser(MessagesParser):
         for message in data["messages"]:
 
             date = message["date"][:10]
-            time = message["date"][12:]
+            time = message["date"][11:]
 
             records.append([date, time, message["from"]])
 

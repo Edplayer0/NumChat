@@ -1,5 +1,7 @@
 from typing import Optional
 
+import numpy as np
+
 import pandas as pd
 
 from src.models.exceptions import NoChatLoaded
@@ -39,26 +41,29 @@ class Analizer:
         self._current_participant = participant
 
     def total_messages(
-        self, date: Optional[str] = None, participant: Optional[str] = None
+        self,
+        date: Optional[str] = None,
+        participant: Optional[str] = None,
+        time: Optional[str] = None,
     ) -> int:
         """Return the number of messages in the current chat."""
         if participant is None and self._current_participant is not None:
             participant = self._current_participant
 
-        if date is None and participant is None:
+        if not any((participant, date, time)):
             messages: int = len(self.messages_df)
             return messages
-        elif date and not participant:
-            mask = self.messages_df["Date"].str.startswith(date)
-            return mask.sum()
-        elif participant and not date:
-            mask = self.messages_df["Sender"] == participant
-            return mask.sum()
-        else:
-            mask = (self.messages_df["Date"].str.startswith(date)) & (
-                self.messages_df["Sender"] == participant
-            )
-            return mask.sum()
+
+        mask = np.array([True for _ in range(len(self.messages_df))])
+
+        if date:
+            mask = mask & (self.messages_df["Date"].str.startswith(date))
+        if time:
+            mask = mask & (self.messages_df["Time"].str.startswith(time))
+        if participant:
+            mask = mask & (self.messages_df["Sender"] == participant)
+
+        return mask.sum()
 
     def participants(self) -> list[str]:
         """Return a list with the name of every participant."""

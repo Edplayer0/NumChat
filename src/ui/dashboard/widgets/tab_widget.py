@@ -1,10 +1,11 @@
 # pylint: disable=no-name-in-module
 from PyQt6.QtWidgets import QTabWidget
 
+from src.ui.dashboard.widgets.tabs.all import AllTab
 from src.ui.dashboard.widgets.tabs.year import YearTab
 from src.ui.dashboard.widgets.tabs.month import MonthTab
 from src.ui.dashboard.widgets.tabs.week import WeekTab
-from src.ui.dashboard.widgets.tabs.all import AllTab
+from src.ui.dashboard.widgets.tabs.day import DayTab
 
 
 class TabWidget(QTabWidget):
@@ -12,6 +13,7 @@ class TabWidget(QTabWidget):
         super().__init__(*args)
 
         self.tabs = {
+            "Day": DayTab(self),
             "Week": WeekTab(self),
             "Month": MonthTab(self),
             "Year": YearTab(self),
