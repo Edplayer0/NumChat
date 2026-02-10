@@ -150,10 +150,10 @@ class SquareChart(QWidget):
 
         for idx in range(0, len(data), width):
             sliced = data[idx : idx + width]
-            line = Line(sliced, mean, index=index[idx : width + idx])
+            line = Line(sliced, mean, index=index[idx : width + idx], parent=self)
             lines.addWidget(line)
 
-        info = Info(data)
+        info = Info(data, parent=self)
         graph.addLayout(lines)
         graph.addWidget(info, alignment=Qt.AlignmentFlag.AlignCenter)
 

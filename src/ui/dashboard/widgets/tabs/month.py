@@ -80,6 +80,7 @@ class MonthTab(QWidget):
             axis=(days_array, mess_array),
             lin_labels=("Days", "Messages"),
             sq_size=8,
+            parent=self,
         )
 
         self.layout.addWidget(self.charts)

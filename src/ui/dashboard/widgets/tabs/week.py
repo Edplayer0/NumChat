@@ -92,6 +92,8 @@ class WeekTab(QWidget):
             title=f"{year}-{month}",
             axis=(week_array, mess_array),
             lin_labels=("Days", "Messages"),
+            lin_tiks=len(week_array) + 1,
+            sq_index=list(week_array),
         )
 
         self.layout.addWidget(self.charts)
