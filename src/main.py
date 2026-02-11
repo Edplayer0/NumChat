@@ -1,7 +1,10 @@
+import os
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path.cwd()))
+path = Path(os.path.dirname(__file__)) / ".."
+
+sys.path.insert(0, str(path))
 
 # pylint: disable=wrong-import-position
 from src.app.app import App
@@ -14,7 +17,9 @@ def main():
 
     app = App()
 
-    app.setStyleSheet(Path("src/style/style.qss").read_text(encoding="UTF-8"))
+    style_path = path / "src" / "style" / "style.qss"
+
+    app.setStyleSheet(style_path.read_text(encoding="UTF-8"))
 
     controller = Controller()
 
