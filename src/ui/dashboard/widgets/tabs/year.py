@@ -46,7 +46,6 @@ class YearTab(QWidget):
 
         if isinstance(self.charts, Charts):
             self.charts.hide()
-            del self.charts
 
         months = list(months_dict.keys())
 

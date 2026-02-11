@@ -62,7 +62,6 @@ class DayTab(QWidget):
 
         if isinstance(self.charts, Charts):
             self.charts.hide()
-            del self.charts
 
         self.space.hide()
 
