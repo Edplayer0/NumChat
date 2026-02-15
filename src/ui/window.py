@@ -20,7 +20,7 @@ class Window(QMainWindow):
 
         self.setCentralWidget(intro)
 
-        self.setWindowTitle("Chat Analizer")
+        self.setWindowTitle("NumChat: Chat Analizer")
 
         controller.window = self
 
@@ -31,6 +31,6 @@ class Window(QMainWindow):
 
         self.setGeometry(200, 200, 700, 500)
 
-        self.setWindowTitle("Chat Analizer: Dashboard")
+        self.setWindowTitle("NumChat: Dashboard")
 
         self.setCentralWidget(dashboard)
