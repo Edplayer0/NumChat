@@ -16,6 +16,9 @@ class TelegramParser(MessagesParser):
 
         for message in data["messages"]:
 
+            if not message["type"] == "message":
+                continue
+
             date = message["date"][:10]
             time = message["date"][11:]
 
