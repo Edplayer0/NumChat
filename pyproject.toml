@@ -1,6 +1,6 @@
 [project]
 name = "NumChat"
-version = "0.1.0"
+version = "1.0.0"
 description = "NumChat is a Python-based application designed to analyze chat data from exported JSON files."
 authors = [
     {name = "Edplayer0",email = "edgarayusodev@proton.me"}
