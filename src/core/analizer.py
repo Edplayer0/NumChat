@@ -1,6 +1,6 @@
-from typing import Optional
+"""Analizer module that provides methods to analyze the chat data."""
 
-import numpy as np
+from typing import Optional
 
 import pandas as pd
 
@@ -8,6 +8,7 @@ from src.models.exceptions import NoChatLoaded
 
 
 class Analizer:
+    """Singleton class that provides methods to analyze the chat data."""
 
     def __new__(cls) -> "Analizer":
         if not hasattr(cls, "_instance"):
@@ -16,6 +17,7 @@ class Analizer:
 
     def __init__(self):
         self._current_participant: Optional[str] = None
+        self._cache = {}
 
     @property
     def messages_df(self):
@@ -29,6 +31,12 @@ class Analizer:
     @messages_df.setter
     def messages_df(self, messages_df: pd.DataFrame):
         self._messages_df = messages_df
+        # Reset cache when new data is loaded
+        self._cache.clear()
+        # Set indices for faster lookups
+        self._messages_df.set_index(
+            ["Date", "Time", "Sender"], inplace=True, drop=False
+        )
 
     def unset_participant(self) -> None:
 
@@ -50,20 +58,25 @@ class Analizer:
         if participant is None and self._current_participant is not None:
             participant = self._current_participant
 
-        if not any((participant, date, time)):
-            messages: int = len(self.messages_df)
-            return messages
+        cache_key = (date, participant, time)
+        if cache_key in self._cache:
+            return self._cache[cache_key]
 
-        mask = np.array([True for _ in range(len(self.messages_df))])
-
+        query = {}
         if date:
-            mask = mask & (self.messages_df["Date"].str.startswith(date))
+            query["Date"] = date
         if time:
-            mask = mask & (self.messages_df["Time"].str.startswith(time))
+            query["Time"] = time
         if participant:
-            mask = mask & (self.messages_df["Sender"] == participant)
+            query["Sender"] = participant
 
-        return mask.sum()
+        filtered_df = self.messages_df
+        for key, value in query.items():
+            filtered_df = filtered_df[filtered_df[key].str.startswith(value)]
+
+        result = len(filtered_df)
+        self._cache[cache_key] = result
+        return result
 
     def participants(self) -> list[str]:
         """Return a list with the name of every participant."""
@@ -82,10 +95,15 @@ class Analizer:
 
         """
 
-        # No date specified
         if date is None:
-            return self.messages_df["Sender"].value_counts().to_dict()
+            result = self.messages_df["Sender"].value_counts().to_dict()
+        else:
+            result = (
+                self.messages_df[self.messages_df["Date"].str.startswith(date)][
+                    "Sender"
+                ]
+                .value_counts()
+                .to_dict()
+            )
 
-        # Date specified
-        mask = self.messages_df["Date"] == date
-        return self.messages_df[mask].value_counts().to_dict()
+        return result
