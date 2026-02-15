@@ -23,7 +23,6 @@ class AllTab(QWidget):
         self.setLayout(self.layout)
 
         self.dates = analizer.messages_df["Date"].unique()
-        self.load()
 
     def load(self):
 
@@ -32,14 +31,22 @@ class AllTab(QWidget):
 
         messages = []
 
-        for _, date in enumerate(self.dates):
+        # Reduce the number of points if there are too many dates
+        max_points = 100
+        if len(self.dates) > max_points:
+            step = len(self.dates) // max_points
+            reduced_dates = self.dates[::step]
+        else:
+            reduced_dates = self.dates
+
+        for date in reduced_dates:
             mess = analizer.total_messages(date=date)
             messages.append(mess)
 
         mess_array = np.array(messages)
 
         self.chart = LinearChart(
-            data=(self.dates, mess_array),
+            data=(reduced_dates, mess_array),
             labels=("Time", "Messages"),
             title="All chat history",
             width=10,
