@@ -44,10 +44,10 @@ class ControlPanel(QWidget):
 
         layout.setContentsMargins(0, 0, 0, 0)
 
-        label = QLabel("Chat Analizer", self, alignment=Qt.AlignmentFlag.AlignTop)
+        label = QLabel("NumChat", self, alignment=Qt.AlignmentFlag.AlignCenter)
         label.setObjectName("label")
 
-        layout.addWidget(label)
+        layout.addWidget(label, alignment=Qt.AlignmentFlag.AlignTop)
 
         info = Info(parent=self)
         layout.addWidget(info, alignment=Qt.AlignmentFlag.AlignCenter)

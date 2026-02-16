@@ -14,6 +14,8 @@ class Intro(QWidget):
 
         layout = QVBoxLayout(self)
 
+        layout.setSpacing(50)
+
         self.setLayout(layout)
 
         heading = QLabel("Welcome", self, alignment=Qt.AlignmentFlag.AlignCenter)
@@ -35,13 +37,21 @@ class Intro(QWidget):
         cancel_button.clicked.connect(sys.exit)
 
         buttons = QHBoxLayout()
+        buttons.setAlignment(Qt.AlignmentFlag.AlignBottom)
 
-        buttons.setContentsMargins(50, 50, 50, 50)
+        buttons.setContentsMargins(50, 0, 50, 0)
         buttons.setSpacing(50)
 
         buttons.addWidget(explore_button)
         buttons.addWidget(cancel_button)
 
+        copy = QLabel(
+            "©2026 Edgar Ayuso Martínez. Released under the MIT license.", self
+        )
+        copy.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
         layout.addWidget(heading)
         layout.addWidget(subheading)
         layout.addLayout(buttons)
+
+        layout.addWidget(copy, alignment=Qt.AlignmentFlag.AlignBottom)
