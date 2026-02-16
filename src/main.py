@@ -17,9 +17,9 @@ def main():
 
     app = App()
 
-    style_path = path / "src" / "style" / "style.qss"
+    style = path / "src" / "style" / "style.qss"
 
-    app.setStyleSheet(style_path.read_text(encoding="UTF-8"))
+    app.setStyleSheet(style.read_text(encoding="UTF-8"))
 
     controller = Controller()
 
