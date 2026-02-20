@@ -9,6 +9,7 @@ from matplotlib.ticker import MaxNLocator
 
 from src.core.analizer import Analizer
 from src.ui.charts.linear_chart import LinearChart
+from src.models.constants import months_dict
 
 analizer = Analizer()
 
@@ -22,7 +23,7 @@ class AllTab(QWidget):
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
 
-        self.dates = analizer.messages_df["Date"].unique()
+        self.dates = analizer.messages_df["Date"].unique().tolist()
 
     def load(self):
 
@@ -33,20 +34,46 @@ class AllTab(QWidget):
 
         # Reduce the number of points if there are too many dates
         max_points = 100
-        if len(self.dates) > max_points:
-            step = len(self.dates) // max_points
-            reduced_dates = self.dates[::step]
-        else:
-            reduced_dates = self.dates
+        step = len(self.dates) // max_points
+        dates = self.dates[::step]
 
-        for date in reduced_dates:
-            mess = analizer.total_messages(date=date)
-            messages.append(mess)
+        if step >= 3:
+
+            if not self.dates[-1] in dates:
+                dates.append(self.dates[-1])
+
+            months = list(months_dict.values())
+
+            step //= 2
+
+            for date in dates:
+                day = int(date[-2:])
+                month = int(date[5:7])
+                date = date[:-3]
+
+                start = max(day - step, 1)
+                end = min(day + step, months[month - 1])
+
+                days_mess = np.array(
+                    analizer.total_messages(date=date, iterate=(start, end + 1))
+                )
+                messages.append(days_mess.mean())
+
+        elif step > 1:
+
+            for date in dates:
+                mess = analizer.total_messages(date=date)
+                messages.append(mess)
+
+        else:
+            for date in self.dates:
+                mess = analizer.total_messages(date=date)
+                messages.append(mess)
 
         mess_array = np.array(messages)
 
         self.chart = LinearChart(
-            data=(reduced_dates, mess_array),
+            data=(dates, mess_array),
             labels=("Time", "Messages"),
             title="All chat history",
             width=10,
