@@ -67,7 +67,7 @@ class Analizer:
                 target = time
 
             start = iterate[0]
-            end = iterate[1]
+            end = iterate[1] + 1
 
             for var in range(start, end):
                 if target == date:
