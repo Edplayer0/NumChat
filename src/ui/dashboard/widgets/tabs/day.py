@@ -65,15 +65,11 @@ class DayTab(QWidget):
 
         self.space.hide()
 
-        messages: list[int] = []
-
         hours_array = np.arange(24)
 
-        for hour in hours_array:
-            hour = str(hour).rjust(2, "0") + ":"
-            date = f"{year}-{month}-{day}"
-            mes_quantity = analizer.total_messages(date=date, time=hour)
-            messages.append(mes_quantity)
+        date = f"{year}-{month}-{day}"
+
+        messages: list[int] = analizer.total_messages(date=date, iterate=(0, 23))
 
         if not messages:
             return

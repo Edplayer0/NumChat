@@ -66,8 +66,6 @@ class WeekTab(QWidget):
 
         self.space.hide()
 
-        messages: list[int] = []
-
         days = list(months_dict.values())[int(month) - 1]
 
         start = int(week) * 7 - 6
@@ -76,11 +74,9 @@ class WeekTab(QWidget):
 
         week_array = np.arange(start, end)
 
-        for day in week_array:
-            day = str(day)
-            date = f"{year}-{month}-{day.rjust(2, "0")}"
-            mes_quantity = analizer.total_messages(date=date)
-            messages.append(mes_quantity)
+        date = f"{year}-{month}"
+
+        messages = analizer.total_messages(date=date, iterate=(start, end - 1))
 
         if not messages:
             return

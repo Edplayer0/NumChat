@@ -53,8 +53,37 @@ class Analizer:
         date: Optional[str] = None,
         participant: Optional[str] = None,
         time: Optional[str] = None,
+        iterate: Optional[tuple[int, int]] = None,
     ) -> int:
         """Return the number of messages in the current chat."""
+
+        if iterate and (date):
+
+            values = []
+
+            if len(date) < 10:
+                target = date
+            else:
+                target = time
+
+            start = iterate[0]
+            end = iterate[1] + 1
+
+            for var in range(start, end):
+                if target == date:
+                    variation = target + "-" + str(var).rjust(2, "0")
+                    target_date = variation
+                    target_time = None
+                else:
+                    variation = str(var).rjust(2, "0")
+                    target_date = date
+                    target_time = variation
+
+                messages = self.total_messages(date=target_date, time=target_time)
+                values.append(messages)
+
+            return values
+
         if participant is None and self._current_participant is not None:
             participant = self._current_participant
 

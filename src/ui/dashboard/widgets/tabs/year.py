@@ -51,14 +51,9 @@ class YearTab(QWidget):
 
         self.space.hide()
 
-        messages: list[int] = []
-
         months_array = np.arange(1, 13)
 
-        for month in months_array:
-            month = str(month)
-            mess_quantity = analizer.total_messages(f"{year}-{month.rjust(2, "0")}")
-            messages.append(mess_quantity)
+        messages = analizer.total_messages(date=year, iterate=(1, 12))
 
         mess_array = np.array(messages)
 
