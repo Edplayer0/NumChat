@@ -60,17 +60,13 @@ class MonthTab(QWidget):
 
         self.space.hide()
 
-        messages: list[int] = []
-
         days = list(months_dict.values())[int(month) - 1]
 
         days_array = np.arange(1, days + 1)
 
-        for day in days_array:
-            day = str(day)
-            date = f"{year}-{month}-{day.rjust(2, "0")}"
-            mes_quantity = analizer.total_messages(date=date)
-            messages.append(mes_quantity)
+        date = f"{year}-{month}"
+
+        messages: list[int] = analizer.total_messages(date=date, iterate=(1, days))
 
         mess_array = np.array(messages)
 
