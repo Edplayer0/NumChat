@@ -45,7 +45,7 @@ class SquareChart(QWidget):
 
                 minumun = QLabel(text=f"Minimun:  {minimun_value}", parent=self)
                 highest = QLabel(text=f"Highest:  {highest_value}", parent=self)
-                mean_label = QLabel(text=f"Promedy:  {mean}", parent=self)
+                mean_label = QLabel(text=f"Average:  {mean}", parent=self)
                 total_label = QLabel(text=f"Total:  {total}", parent=self)
                 layout.addWidget(minumun)
                 layout.addWidget(highest)
