@@ -2,6 +2,7 @@
 
 # pylint: disable=no-name-in-module
 from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtGui import QIcon
 
 from src.ui.intro.intro import Intro
 from src.ui.dashboard.dashboard import Dashboard
@@ -13,14 +14,13 @@ class Window(QMainWindow):
     def __init__(self, controller):
         super().__init__()
 
-        self.setWindowTitle("Chat Analizer")
+        self.setWindowTitle("NumChat: Chat Analizer")
         self.setGeometry(300, 300, 500, 350)
+        self.setWindowIcon(QIcon("assets/icon.ico"))
 
         intro = Intro(controller, self)
 
         self.setCentralWidget(intro)
-
-        self.setWindowTitle("NumChat: Chat Analizer")
 
         controller.window = self
 
