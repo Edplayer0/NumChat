@@ -3,6 +3,7 @@ import sys
 # pylint: disable=no-name-in-module
 from PyQt6.QtWidgets import QVBoxLayout, QLabel, QPushButton, QWidget, QHBoxLayout
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon
 
 from src.core.controller import Controller
 
@@ -14,9 +15,16 @@ class Intro(QWidget):
 
         layout = QVBoxLayout(self)
 
-        layout.setSpacing(50)
+        layout.setSpacing(20)
+        layout.setContentsMargins(20, 0, 20, 5)
 
         self.setLayout(layout)
+
+        pixmap = QIcon("assets/icon.ico").pixmap(100, 100)
+
+        logo = QLabel(self)
+        logo.setPixmap(pixmap)
+        logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         heading = QLabel("Welcome", self, alignment=Qt.AlignmentFlag.AlignCenter)
         heading.setObjectName("heading")
@@ -50,6 +58,7 @@ class Intro(QWidget):
         )
         copy.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
+        layout.addWidget(logo)
         layout.addWidget(heading)
         layout.addWidget(subheading)
         layout.addLayout(buttons)
