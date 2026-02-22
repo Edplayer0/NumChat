@@ -16,6 +16,8 @@ class Dashboard(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
 
         self.tabs = TabWidget(self)
+
+        # instanciating ControlPanel starts loading the AllTab
         control_panel = ControlPanel(self)
 
         layout.addWidget(control_panel)
