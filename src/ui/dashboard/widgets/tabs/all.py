@@ -27,13 +27,13 @@ class AllTab(QWidget):
             loaded = pyqtSignal(list)
 
             @pyqtSlot()
-            def load(self):
+            def load(self) -> None:
 
                 self.loading.emit()
 
                 dates = analizer.messages_df["Date"].unique().tolist()
 
-                self.messages = []
+                messages = []
 
                 # Reduce the number of points if there are too many dates
                 max_points = 100
@@ -60,20 +60,20 @@ class AllTab(QWidget):
                         days_mess = np.array(
                             analizer.total_messages(date=date, iterate=(start, end + 1))
                         )
-                        self.messages.append(days_mess.mean())
+                        messages.append(days_mess.mean())
 
                 elif step > 1:
 
                     for date in dates:
                         mess = analizer.total_messages(date=date)
-                        self.messages.append(mess)
+                        messages.append(mess)
 
                 else:
                     for date in self.dates:
                         mess = analizer.total_messages(date=date)
-                        self.messages.append(mess)
+                        messages.append(mess)
 
-                self.loaded.emit([dates, self.messages])
+                self.loaded.emit([dates, messages])
 
         self.worker = Worker()
         self.worker_thread = QThread()
@@ -89,13 +89,11 @@ class AllTab(QWidget):
         self.worker.loading.connect(self.loading)
         self.worker.loaded.connect(self.start)
 
-    def load(self):
+    def load(self) -> None:
         self.work.emit()
 
     @pyqtSlot(list)
-    def start(self, data):
-
-        print("loaded")
+    def start(self, data: list) -> None:
 
         mess_array = np.array(data[1])
         dates = data[0]
@@ -114,5 +112,6 @@ class AllTab(QWidget):
         self.layout.addWidget(self.chart, alignment=Qt.AlignmentFlag.AlignCenter)
 
     @pyqtSlot()
-    def loading(self):
+    def loading(self) -> None:
+        # TODO: add loading animation
         print("loading")
