@@ -57,9 +57,7 @@ class Analizer:
     ) -> int:
         """Return the number of messages in the current chat."""
 
-        if iterate and (date):
-
-            values = []
+        if iterate and date:
 
             if len(date) < 10:
                 target = date
@@ -69,18 +67,16 @@ class Analizer:
             start = iterate[0]
             end = iterate[1] + 1
 
-            for var in range(start, end):
-                if target == date:
-                    variation = target + "-" + str(var).rjust(2, "0")
-                    target_date = variation
-                    target_time = None
-                else:
-                    variation = str(var).rjust(2, "0")
-                    target_date = date
-                    target_time = variation
-
-                messages = self.total_messages(date=target_date, time=target_time)
-                values.append(messages)
+            if target == date:
+                values = [
+                    self.total_messages(date=f"{date}-{str(var).rjust(2, '0')}")
+                    for var in range(start, end)
+                ]
+            else:
+                values = [
+                    self.total_messages(date=date, time=str(var).rjust(2, "0"))
+                    for var in range(start, end)
+                ]
 
             return values
 
