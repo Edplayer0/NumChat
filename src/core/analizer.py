@@ -91,17 +91,18 @@ class Analizer:
         if cache_key in self._cache:
             return self._cache[cache_key]
 
-        query = {}
+        query = []
         if date:
-            query["Date"] = date
+            query.append(f"Date.str.startswith('{date}')")
         if time:
-            query["Time"] = time
+            query.append(f"Time.str.startswith('{time}')")
         if participant:
-            query["Sender"] = participant
+            query.append(f"Sender == '{participant}'")
 
-        filtered_df = self.messages_df
-        for key, value in query.items():
-            filtered_df = filtered_df[filtered_df[key].str.startswith(value)]
+        if query:
+            filtered_df = self.messages_df.query(" and ".join(query))
+        else:
+            filtered_df = self.messages_df
 
         result = len(filtered_df)
         self._cache[cache_key] = result

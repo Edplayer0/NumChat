@@ -16,4 +16,6 @@ class MessagesParser(ABC):
 
     def to_dataframe(self, values: list):
         messages_df = pd.DataFrame(values, columns=["Date", "Time", "Sender"])
+        messages_df["Sender"] = messages_df["Sender"].astype("category")
+        print(messages_df.head())
         return messages_df
