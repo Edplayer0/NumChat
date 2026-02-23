@@ -1,4 +1,4 @@
-import json
+import ujson
 
 import pandas as pd
 
@@ -10,7 +10,7 @@ class TelegramParser(MessagesParser):
     def load_messages(self, file_path: str) -> pd.DataFrame:
 
         with open(file_path, "r", encoding="utf-8") as file:
-            data = json.load(file)
+            data = ujson.loads(file.read())
 
         records = []
 
