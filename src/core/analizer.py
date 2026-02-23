@@ -33,16 +33,22 @@ class Analizer:
         self._messages_df = messages_df
         # Reset cache when new data is loaded
         self._cache.clear()
-        # Set indices for faster lookups
-        self._messages_df.set_index(
-            ["Date", "Time", "Sender"], inplace=True, drop=False
+
+        # Groups for faster lookups
+        self.grouped_by_date = self._messages_df.groupby("Date").size().to_dict()
+        self.grouped_by_date_and_participant = (
+            self._messages_df.groupby(by=["Date", "Sender"]).size().to_dict()
         )
 
     def unset_participant(self) -> None:
+        """Unset the current participant,
+        so the total_messages method will return the total messages of all participants.
+        """
 
         self._current_participant = None
 
     def set_participant(self, participant: str) -> None:
+        """Set the current participant, so the total_messages method will return the total messages of that participant."""
         if participant not in self.participants():
             raise ValueError("Unknown participant name.")
 
@@ -86,6 +92,12 @@ class Analizer:
         cache_key = (date, participant, time)
         if cache_key in self._cache:
             return self._cache[cache_key]
+
+        if date is not None and len(date) == 10 and time is None:
+            if participant is None:
+                return self.grouped_by_date.get(date, 0)
+
+            return self.grouped_by_date_and_participant.get((date, participant), 0)
 
         query = []
         if date:

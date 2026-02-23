@@ -3,7 +3,7 @@ from typing import Optional
 import numpy as np
 
 # pylint: disable=no-name-in-module
-from PyQt6.QtWidgets import QWidget, QVBoxLayout
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel
 from PyQt6.QtCore import Qt, QObject, pyqtSignal, pyqtSlot, QThread
 from matplotlib.ticker import MaxNLocator
 
@@ -95,11 +95,10 @@ class AllTab(QWidget):
     @pyqtSlot(list)
     def start(self, data: list) -> None:
 
+        self.loading.hide()
+
         mess_array = np.array(data[1])
         dates = data[0]
-
-        if isinstance(self.chart, LinearChart):
-            self.chart.hide()
 
         self.chart = LinearChart(
             data=(dates, mess_array),
@@ -113,5 +112,11 @@ class AllTab(QWidget):
 
     @pyqtSlot()
     def loading(self) -> None:
-        # TODO: add loading animation
-        print("loading")
+
+        if isinstance(self.chart, LinearChart):
+            self.chart.hide()
+
+        self.loading = QLabel("Loading...")
+        self.loading.setStyleSheet("font-size: 40px; color: blue;")
+        self.loading.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.layout.addWidget(self.loading)
