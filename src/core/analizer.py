@@ -48,7 +48,9 @@ class Analizer:
         self._current_participant = None
 
     def set_participant(self, participant: str) -> None:
-        """Set the current participant, so the total_messages method will return the total messages of that participant."""
+        """Set the current participant,
+        so the total_messages method will return the total messages of that participant.
+        """
         if participant not in self.participants():
             raise ValueError("Unknown participant name.")
 
@@ -57,12 +59,29 @@ class Analizer:
     def total_messages(
         self,
         date: Optional[str] = None,
-        participant: Optional[str] = None,
         time: Optional[str] = None,
         iterate: Optional[tuple[int, int]] = None,
-    ) -> int:
-        """Return the number of messages in the current chat."""
+    ) -> int | list[int]:
+        """Return the total number of messages in the current chat, filtered by date, time and participant.
 
+        Args:
+            date (Optional[str]): The date in format (YY-MM-DD),can also be (YY-MM) for getting the messages in a month or in a year (YY).
+            time (Optional[str]): The time in format (HH).
+            iterate (Optional[tuple[int, int]]): A tuple with the start and end of the iteration, used for getting the messages in a range of dates or times.
+        Returns:
+            int | list[int]: The number of messages in the current chat, or a list with the number of messages in a range of dates or times.
+
+        """
+
+        # Set the participant
+        participant = self._current_participant
+
+        # Generate a cache_key and search for cached results
+        cache_key = (date, participant, time, iterate)
+        if cache_key in self._cache:
+            return self._cache[cache_key]
+
+        # Iterate over the next level of uncomplete date or time
         if iterate and date:
 
             if len(date) < 10:
@@ -84,21 +103,19 @@ class Analizer:
                     for var in range(start, end)
                 ]
 
+            self._cache[cache_key] = values
+
             return values
 
-        if participant is None and self._current_participant is not None:
-            participant = self._current_participant
-
-        cache_key = (date, participant, time)
-        if cache_key in self._cache:
-            return self._cache[cache_key]
-
+        # When an specific date is provided, uses the grouped dataframes
+        # for faster lookups
         if date is not None and len(date) == 10 and time is None:
             if participant is None:
                 return self.grouped_by_date.get(date, 0)
 
             return self.grouped_by_date_and_participant.get((date, participant), 0)
 
+        # Generate a query when isn't provided an specific date or time
         query = []
         if date:
             query.append(f"Date.str.startswith('{date}')")
@@ -107,13 +124,17 @@ class Analizer:
         if participant:
             query.append(f"Sender == '{participant}'")
 
+        # Filter the dataframe
         if query:
             filtered_df = self.messages_df.query(" and ".join(query))
         else:
             filtered_df = self.messages_df
 
         result = len(filtered_df)
+
+        # Cache the result
         self._cache[cache_key] = result
+
         return result
 
     def participants(self) -> list[str]:
@@ -123,25 +144,9 @@ class Analizer:
 
         return participants
 
-    def messages_per_participant(self, date: Optional[str] = None) -> dict[str, int]:
-        """Return the quantity of messages per participant.
+    def messages_per_participant(self) -> dict[str, int]:
+        """Return the quantity of messages per participant."""
 
-        Args:
-            date (Optional[str]): The date in format (YY-MM-DD),can also be (YY-MM) for getting the messages in a month or in a year (YY).
-        Returns:
-            dict[str, int]
-
-        """
-
-        if date is None:
-            result = self.messages_df["Sender"].value_counts().to_dict()
-        else:
-            result = (
-                self.messages_df[self.messages_df["Date"].str.startswith(date)][
-                    "Sender"
-                ]
-                .value_counts()
-                .to_dict()
-            )
+        result = self.messages_df["Sender"].value_counts().to_dict()
 
         return result
